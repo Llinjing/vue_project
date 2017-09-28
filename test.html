@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>vue_test</title>
+    <script src="https://unpkg.com/vue@2.4.4/dist/vue.js"></script>
+  </head>
+  <body>
+
+    <div id="app">
+    {{ message }}
+    </div>
+    <!-- 为什么脚本一定要放在下面才生效？？ -->
+    <script>
+  	var app = new Vue({
+  		el: '#app',
+  		data: {
+  			message: 'Hello Vue! I love you'
+  		}
+  	})
+    </script>
+
+    <br/>
+    <br/>
+    <br/>
+    <div id="app-2">
+    	<span v-bind:title="message">
+    		鼠标悬停几秒查看绑定的信息
+    	</span>
+    </div>
+    <script>
+  	var app2 = new Vue({
+  		el:'#app-2',
+  		data:{
+  			message:'页面加载于' + new Date().toLocaleString()
+  		}
+  	})
+    </script>
+
+    <!-- 控制切换一个元素的渲染 -->
+    <div id="app-3">
+    	<p v-if="seen">
+    	    现在你看到我了
+    	</p>
+    </div>
+    <script>
+  	var app3 = new Vue({
+  		el:'#app-3',
+  		data:{
+  			seen:true //or false
+  		}
+  	})
+    </script>
+
+    <!-- 循环渲染 todos是绑定的对象的名字-->
+    <div id="app-4">
+    	<ol>
+    		<li v-for="todo in todos">
+    			{{todo.text}}
+    		</li>
+    	</ol>
+    </div>
+
+    <script>
+  	var app4 = new Vue({
+  		el:"#app-4",
+  		data:{
+  			todos:[
+  			  {text:'nihao'},
+  			  {text:'wobuhao'},
+  			  {text:'hhahh'}
+  			]
+  		}
+  	})
+  </script>
+
+  <div id="app-5">
+  	<p>{{message}}</p>
+  	<button v-on:click="reverseMessage">逆传消息</button>
+  </div>
+  <script>
+  	var app5 = new Vue({
+  		el:"#app-5",
+  		data:{
+  			message:'hello'
+  		},
+  		methods:{
+  			reverseMessage:function(){
+  				this.message = this.message.split('').reverse().join('') //先拆分成单词，再反转
+  			}
+  		}
+  	})
+  </script>
+
+  <!-- 表单处理 -->
+  <div id="app-6">
+  	<p>{{message}}</p>
+  	<input v-model="message">
+  </div>
+  <script>
+  	var app6 = new Vue({
+  		el:"#app-6",
+  		data:{
+  			message:'hello'
+  		}
+  	})
+  </script>
+
+  <!-- 组件化
+       todo-item ：vue组件
+       groceryList：vue对象中的一个数组
+       1.定义一个vue组件
+       2.创建vue对象，与div绑定
+       3.vue组件，循环遍历vue对象的数据，展示
+   -->
+  <div id="app-7">
+  	<ol>
+  	  <todo-item 
+  	    v-for="item in groceryList"
+  	    v-bind:todo="item"
+  	    v-bind:key="item.id">
+  	  </todo-item>
+  	</ol>
+  </div>
+  
+  <script>
+  	Vue.component('todo-item',{
+  		props:['todo'],
+  		template:'<li>{{todo.text}}</li>'
+  	})
+  	var app7 = new Vue({
+  		el:'#app-7',
+  		data:{
+  			groceryList:[
+  			  {id:0,text:'蔬菜'},
+  			  {id:1,text:'材料'},
+  			  {id:2,text:'东西'}
+  			]
+  		}
+  	})
+  </script>
+
+  </body>
+</html>
